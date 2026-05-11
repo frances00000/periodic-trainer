@@ -26,10 +26,12 @@
       text-align:center;
     }
 
-    .question{
-      font-size:60px;
-      font-weight:bold;
-      margin:20px 0;
+
+  .question{
+  font-size:60px;
+  font-weight:bold;
+  margin:20px 0;
+  animation: pop 0.3s ease;
     }
 
     input{
@@ -74,7 +76,19 @@
     .modes button{
       flex:1;
     }
+@keyframes pop{
 
+  0%{
+    transform:scale(0.5);
+    opacity:0;
+  }
+
+  100%{
+    transform:scale(1);
+    opacity:1;
+  }
+
+}
     #result{
       margin-top:15px;
       font-weight:bold;
@@ -250,6 +264,8 @@ function checkAnswer(){
 
     document.getElementById("result").innerText =
       "✅ Correct!"
+    
+    document.getElementById("correctSound").play()
 
   }else{
 
@@ -257,6 +273,7 @@ function checkAnswer(){
 
     document.getElementById("result").innerText =
       "❌ Correct Answer: " + answer
+    document.getElementById("wrongSound").play()
   }
 
   const accuracy =
@@ -280,6 +297,12 @@ window.addEventListener("keydown",function(e){
 generateQuestion()
 
 </script>
+<audio id="correctSound"
+src="https://assets.mixkit.co/active_storage/sfx/2013/2013-preview.mp3">
+</audio>
 
+<audio id="wrongSound"
+src="https://assets.mixkit.co/active_storage/sfx/2955/2955-preview.mp3">
+</audio>
 </body>
 </html>
