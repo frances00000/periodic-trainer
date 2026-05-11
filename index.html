@@ -91,6 +91,8 @@
     <div>⭐ <span id="score">0</span></div>
     <div>🔥 <span id="streak">0</span></div>
     <div>🎯 <span id="accuracy">0</span>%</div>
+    <div>⏰ <span id="timer">10</span></div>
+    <div>❤️ <span id="lives">5</span></div>
   </div>
 
   <div class="modes">
@@ -143,7 +145,9 @@ let total = 0
 let correct = 0
 
 let mode = "name"
-
+let time = 10
+let lives = 5
+  
 function setMode(newMode){
   mode = newMode
 
@@ -161,7 +165,36 @@ function setMode(newMode){
     document.getElementById("modeText").innerText =
       "Identify Atomic Number"
   }
+setInterval(() => {
 
+  time--
+
+  document.getElementById("timer").innerText = time
+
+  if(time <= 0){
+
+    streak = 0
+lives--
+
+document.getElementById("lives").innerText = lives
+
+if(lives <= 0){
+
+  alert("Game Over!")
+
+  lives = 3
+  score = 0
+
+  document.getElementById("score").innerText = score
+  document.getElementById("lives").innerText = lives
+}
+
+    time = 10
+
+    generateQuestion()
+  }
+
+}, 1000)
   generateQuestion()
 }
 
@@ -233,7 +266,9 @@ function checkAnswer(){
   document.getElementById("streak").innerText=streak
   document.getElementById("accuracy").innerText=accuracy
 
-  setTimeout(generateQuestion,1200)
+time = 10
+
+setTimeout(generateQuestion,1200)
 }
 
 window.addEventListener("keydown",function(e){
