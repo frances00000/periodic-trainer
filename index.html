@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Periodic Table Trainer</title>
+
+  <style>
+    body{
+      margin:0;
+      font-family:Arial;
+      background:#0f172a;
+      color:white;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      min-height:100vh;
+    }
+
+    .container{
+      background:#1e293b;
+      width:90%;
+      max-width:500px;
+      padding:30px;
+      border-radius:20px;
+      text-align:center;
+    }
+
+    .question{
+      font-size:60px;
+      font-weight:bold;
+      margin:20px 0;
+    }
+
+    input{
+      width:100%;
+      padding:12px;
+      border:none;
+      border-radius:10px;
+      margin-bottom:15px;
+      box-sizing:border-box;
+    }
+
+    button{
+      width:100%;
+      padding:12px;
+      border:none;
+      border-radius:10px;
+      background:#3b82f6;
+      color:white;
+      font-weight:bold;
+      cursor:pointer;
+    }
+
+    button:hover{
+      background:#2563eb;
+    }
+
+    .stats{
+      display:flex;
+      justify-content:space-between;
+      margin-bottom:20px;
+      background:#334155;
+      padding:10px;
+      border-radius:10px;
+    }
+
+    .modes{
+      display:flex;
+      gap:10px;
+      margin-bottom:20px;
+    }
+
+    .modes button{
+      flex:1;
+    }
+
+    #result{
+      margin-top:15px;
+      font-weight:bold;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <h1>⚛️ Periodic Trainer</h1>
+
+  <div class="stats">
+    <div>⭐ <span id="score">0</span></div>
+    <div>🔥 <span id="streak">0</span></div>
+    <div>🎯 <span id="accuracy">0</span>%</div>
+  </div>
+
+  <div class="modes">
+    <button onclick="setMode('name')">Name</button>
+    <button onclick="setMode('symbol')">Symbol</button>
+    <button onclick="setMode('atomic')">Atomic</button>
+  </div>
+
+  <p id="modeText">Identify Element Name</p>
+
+  <div class="question" id="question">
+    Na
+  </div>
+
+  <input
+    type="text"
+    id="answerInput"
+    placeholder="Type answer..."
+  >
+
+  <button onclick="checkAnswer()">
+    Submit
+  </button>
+
+  <p id="result"></p>
+
+</div>
+
+<script>
+
+const elements = [
+  {name:"Hydrogen",symbol:"H",atomic:1},
+  {name:"Helium",symbol:"He",atomic:2},
+  {name:"Lithium",symbol:"Li",atomic:3},
+  {name:"Beryllium",symbol:"Be",atomic:4},
+  {name:"Boron",symbol:"B",atomic:5},
+  {name:"Carbon",symbol:"C",atomic:6},
+  {name:"Nitrogen",symbol:"N",atomic:7},
+  {name:"Oxygen",symbol:"O",atomic:8},
+  {name:"Fluorine",symbol:"F",atomic:9},
+  {name:"Neon",symbol:"Ne",atomic:10},
+  {name:"Sodium",symbol:"Na",atomic:11},
+  {name:"Magnesium",symbol:"Mg",atomic:12}
+]
+
+let current
+let score = 0
+let streak = 0
+let total = 0
+let correct = 0
+
+let mode = "name"
+
+function setMode(newMode){
+  mode = newMode
+
+  if(mode==="name"){
+    document.getElementById("modeText").innerText =
+      "Identify Element Name"
+  }
+
+  if(mode==="symbol"){
+    document.getElementById("modeText").innerText =
+      "Identify Element Symbol"
+  }
+
+  if(mode==="atomic"){
+    document.getElementById("modeText").innerText =
+      "Identify Atomic Number"
+  }
+
+  generateQuestion()
+}
+
+function generateQuestion(){
+
+  current =
+    elements[Math.floor(Math.random()*elements.length)]
+
+  if(mode==="name"){
+    document.getElementById("question").innerText =
+      current.symbol
+  }
+
+  if(mode==="symbol"){
+    document.getElementById("question").innerText =
+      current.name
+  }
+
+  if(mode==="atomic"){
+    document.getElementById("question").innerText =
+      current.name
+  }
+
+  document.getElementById("answerInput").value=""
+}
+
+function checkAnswer(){
+
+  const input =
+    document.getElementById("answerInput").value.trim()
+
+  let answer=""
+
+  if(mode==="name"){
+    answer=current.name
+  }
+
+  if(mode==="symbol"){
+    answer=current.symbol
+  }
+
+  if(mode==="atomic"){
+    answer=current.atomic.toString()
+  }
+
+  total++
+
+  if(input.toLowerCase()===answer.toLowerCase()){
+
+    score++
+    streak++
+    correct++
+
+    document.getElementById("result").innerText =
+      "✅ Correct!"
+
+  }else{
+
+    streak=0
+
+    document.getElementById("result").innerText =
+      "❌ Correct Answer: " + answer
+  }
+
+  const accuracy =
+    Math.round((correct/total)*100)
+
+  document.getElementById("score").innerText=score
+  document.getElementById("streak").innerText=streak
+  document.getElementById("accuracy").innerText=accuracy
+
+  setTimeout(generateQuestion,1200)
+}
+
+window.addEventListener("keydown",function(e){
+  if(e.key==="Enter"){
+    checkAnswer()
+  }
+})
+
+generateQuestion()
+
+</script>
+
+</body>
+</html>
