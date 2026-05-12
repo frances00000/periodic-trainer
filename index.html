@@ -102,6 +102,7 @@
   <h1>⚛️ Periodic Trainer</h1>
 
   <div class="stats">
+    <div>🏆 <span id="bestScore">0</span></div>
     <div>⭐ <span id="score">0</span></div>
     <div>🔥 <span id="streak">0</span></div>
     <div>🎯 <span id="accuracy">0</span>%</div>
@@ -259,14 +260,16 @@ const elements = [
 ]
 
 let current
-let score = 0
-let streak = 0
-let total = 0
-let correct = 0
+let score = Number(localStorage.getItem("score")) || 0
+let streak = Number(localStorage.getItem("streak")) || 0
+let correct = Number(localStorage.getItem("correct")) || 0
+let total = Number(localStorage.getItem("total")) || 0
 
 let mode = "name"
 let time = 10
 let lives = 5
+  let bestScore =
+  Number(localStorage.getItem("bestScore")) || 0
   
 function setMode(newMode){
   mode = newMode
@@ -302,7 +305,7 @@ if(lives <= 0){
 
   alert("Game Over!")
 
-  lives = 3
+  lives = 5
   score = 0
 
   document.getElementById("score").innerText = score
@@ -310,7 +313,33 @@ if(lives <= 0){
 }
 
     time = 10
+document.getElementById("score").innerText = score
+document.getElementById("streak").innerText = streak
 
+const savedAccuracy =
+  total > 0
+  ? Math.round((correct / total) * 100)
+  : 0
+
+document.getElementById("accuracy").innerText =
+  savedAccuracy
+if(score > bestScore){
+
+  bestScore = score
+
+  localStorage.setItem("bestScore", bestScore)
+
+  document.getElementById("bestScore").innerText =
+    bestScore
+}
+
+localStorage.setItem("score", score)
+localStorage.setItem("streak", streak)
+localStorage.setItem("correct", correct)
+localStorage.setItem("total", total)
+    
+document.getElementById("bestScore").innerText =
+  bestScore
     generateQuestion()
   }
 
